@@ -1,11 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import MaskedInput from 'react-text-mask';
-import { Box, TextField, Button, ButtonGroup, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { Box, TextField, Button, ButtonGroup, Select, MenuItem } from "@mui/material";
 import CurrencyInput from "./currencyInput";
 
 
-const AddForm = ({ handleAddFormToggle, handleAddTask, setTask, task }) => {
+const AddForm = ({ handleAddFormToggle, handleAddTransaction, setTransaction, transaction }) => {
   const [selectedOption, setSelectedOption] = useState('checking');
 
   const handleChange = (event) => {
@@ -34,9 +33,10 @@ const AddForm = ({ handleAddFormToggle, handleAddTask, setTask, task }) => {
           }}
           value={selectedOption}
           onChange={handleChange}
+          data-testid="demo-simple-select"
         >
           <MenuItem value="checking">Deposit Checking</MenuItem>
-          <MenuItem value="saving">Deposit Saiving</MenuItem>
+          <MenuItem value="saving" >Deposit Saving</MenuItem>
           <MenuItem value="transferToSaving">Transfer Checking to Saving</MenuItem>
           <MenuItem value="transferToChecking">Transfer Saiving to Checking</MenuItem>
         </Select>
@@ -49,7 +49,7 @@ const AddForm = ({ handleAddFormToggle, handleAddTask, setTask, task }) => {
         color="primary"
         variant="outlined"
         fontColor="primary"
-        value={task}
+        value={transaction}
         sx={{
           "& .MuiOutlinedInput-notchedOutline": {
             borderColor: "primary.light",
@@ -65,10 +65,11 @@ const AddForm = ({ handleAddFormToggle, handleAddTask, setTask, task }) => {
         InputProps={{
           inputComponent: CurrencyInput,
         }}
-        onChange={(e) => setTask((prev) => e.target.value.replace('$', '').replace(',', ''))}
+        data-testid="transaction-input"
+        onChange={(e) => setTransaction((prev) => e.target.value.replace('$', '').replace(',', ''))}
       />
       <ButtonGroup fullWidth sx={{ mb: 2 }}>
-        <Button variant="outlined" color="primary" onClick={(e)=> handleAddTask(e, selectedOption) }>
+        <Button variant="outlined" color="primary" data-testid="submit-button" onClick={(e)=> handleAddTransaction(e, selectedOption) }>
           add
         </Button>
         <Button variant="outlined" color="error" onClick={handleAddFormToggle}>

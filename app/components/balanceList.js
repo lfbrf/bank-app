@@ -60,7 +60,6 @@ const BalanceList = ({transaction, balanceListRef}) => {
   
   {transactions.length > 0 && transactions.map((data) => {
     const labelId = `checkbox-list-label-${data.id}`;
-    console.log('##### data ', data)
     return (
       <ListItem
         key={data.id}

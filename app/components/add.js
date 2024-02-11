@@ -6,35 +6,34 @@ import Button from "@mui/material/Button";
 const add = ({setTransaction, fetchTransactions}) => {
   const [addForm, setAddForm] = useState(false);
 
-  const [task, setTask] = useState("");
+  const [transaction, setTransactions] = useState("");
 
-  const handleTaskReset = () => setTask(() => "");
+  const handleTransactionReset = () => setTransactions(() => "");
 
   const handleAddFormToggle = () => {
     setAddForm((prev) => !prev);
-    handleTaskReset();
+    handleTransactionReset();
   };
 
-  const handleAddTask = (e, selectedOption) => {
+  const handleAddTransaction = (e, selectedOption) => {
     e.preventDefault();
     fetch(`http://localhost:3000/api/${selectedOption}`, {
       method: "POST",
-      body: JSON.stringify({ value: task }),
+      body: JSON.stringify({ value: transaction }),
       headers: {
         "Content-Type": "application/json",
       },
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to add task");
+          throw new Error("Failed to add transaction");
         }
         return response.json();
       })
       .then((data) => {
-        console.log("Task added successfully:", data);
         setTransaction(true);
         fetchTransactions();
-        handleTaskReset();
+        handleTransactionReset();
       })
       .catch((error) => {
         // Log any errors
@@ -55,12 +54,14 @@ const add = ({setTransaction, fetchTransactions}) => {
         Add/Transfer Founds
       </Button>
       {addForm ? (
-        <AddForm
+        <div data-testid="add-form">
+          <AddForm
           handleAddFormToggle={handleAddFormToggle}
-          handleAddTask={(event, selectedOption) => handleAddTask(event, selectedOption)}
-          setTask={setTask}
-          task={task}
+          handleAddTransaction={(event, selectedOption) => handleAddTransaction(event, selectedOption)}
+          setTransaction={setTransactions}
+          transaction={transaction}
         />
+        </div>
       ) : null}
     </>
   );

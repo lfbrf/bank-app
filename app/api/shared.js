@@ -56,14 +56,12 @@ export async function handleTransfer(req, fromAccountType, toAccountType) {
       const account = await db.all("SELECT * FROM account where user_id = 1 ");
       const fromBalance = account.find(acc => acc.type === fromAccountType)?.balance || 0;
       const toBalance = account.find(acc => acc.type === toAccountType)?.balance || 0;
-  
       if (fromBalance - value < 0) {
         throw new Error("Not enough funds to transfer");
       }
   
       const newFromBalance = fromBalance - parseFloat(value.replace(/,/, '.'));
       const newToBalance = toBalance + parseFloat(value.replace(/,/, '.'));
-  
       await db.run(`UPDATE account SET balance = ? WHERE user_id = 1 and type = ? `, [newFromBalance, fromAccountType]);
       await db.run(`UPDATE account SET balance = ? WHERE user_id = 1 and type = ? `, [newToBalance, toAccountType]);
       
